@@ -30,9 +30,7 @@ type GameBoardProps = {
 };
 
 class GameBoard extends React.Component<GameBoardProps, {}> {
-    handleClick = (playerIndex: number, PitIndex: number) => (
-        value: number
-    ) => {
+    handleClick = (playerIndex: number, PitIndex: number) => (value: number) => {
         this.props.onPitClick(playerIndex, PitIndex, value);
     };
 
@@ -63,25 +61,15 @@ class GameBoard extends React.Component<GameBoardProps, {}> {
                     <Row gutter={16}>
                         <Col xs={24} sm={4}>
                             <UserAvatar isActive={activePlayer == 1} />
-                            <Score
-                                value={board[0]}
-                                playerName={players.firstPlayer}
-                            />
+                            <Score value={board[0]} playerName={players.firstPlayer} />
                         </Col>
                         <Col span={16} xs={24} sm={16}>
-                            <div style={pitsRowStyle}>
-                                {this.renderFirstPlayerPits()}
-                            </div>
-                            <div style={secondPitsRowStyle}>
-                                {this.renderSecondPlayerPits()}
-                            </div>
+                            <div style={pitsRowStyle}>{this.renderFirstPlayerPits()}</div>
+                            <div style={secondPitsRowStyle}>{this.renderSecondPlayerPits()}</div>
                         </Col>
                         <Col span={4} xs={24} sm={4}>
                             <UserAvatar isActive={activePlayer == 2} />
-                            <Score
-                                value={board[7]}
-                                playerName={players.secondPlayer}
-                            />
+                            <Score value={board[7]} playerName={players.secondPlayer} />
                         </Col>
                     </Row>
                 </Paper>

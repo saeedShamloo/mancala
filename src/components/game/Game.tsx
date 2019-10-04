@@ -5,21 +5,6 @@ import {Typography, notification, Icon, Modal} from 'antd';
 
 const {Title} = Typography;
 
-const capturedIndex = {
-    1: 13,
-    2: 12,
-    3: 11,
-    4: 10,
-    5: 9,
-    6: 8,
-    8: 6,
-    9: 5,
-    10: 4,
-    11: 3,
-    12: 2,
-    13: 1
-};
-
 export type GamePalayers = {firstPlayer: string; secondPlayer: string};
 type GameProps = {};
 type GameState = {
@@ -123,51 +108,53 @@ class Game extends React.Component<GameProps, GameState> {
                 board: board,
                 playerTurn: this.detecNextPlayer(i + 1, playerIndex)
             },
-            () => this.afterMoveHandler(playerIndex, i)
+            () => this.afterMoveHandler(playerIndex, i + 1)
         );
     };
 
-    afterMoveHandler = (playerIndex: 1 | 2, actionPitIndex: number) => {
+    afterMoveHandler = (playerIndex: 1 | 2, activePitIndex: number) => {
+        const oppositePitIndex = this.getOppositePitIndex(activePitIndex);
         if (this.state.playerTurn == playerIndex) {
             this.openNotification('you get free turn !!!');
         }
-        if (this.canCapture(this.state.board, playerIndex, actionPitIndex)) {
-            this.captureHandler(playerIndex, actionPitIndex);
+        if (this.canCapture(playerIndex, activePitIndex, oppositePitIndex)) {
+            this.captureHandler(playerIndex, activePitIndex, oppositePitIndex);
         } else {
             this.checkGameResult();
         }
     };
 
-    canCapture = (board: number[], playerIndex: 1 | 2, index: number) => {
+    canCapture = (playerIndex: 1 | 2, activePitIndex: number, oppositePitIndex: number) => {
+        const {board} = this.state;
         if (playerIndex == 1) {
             return (
-                index >= 0 &&
-                index < 6 &&
-                board[index + 1] == 1 &&
-                board[capturedIndex[index + 1]] > 0
+                activePitIndex >= 1 &&
+                activePitIndex <= 6 &&
+                board[activePitIndex] == 1 &&
+                board[oppositePitIndex] > 0
             );
         }
 
         if (playerIndex == 2) {
             return (
-                index <= 12 &&
-                index > 6 &&
-                board[index + 1] == 1 &&
-                board[capturedIndex[index + 1]] > 0
+                activePitIndex >= 8 &&
+                activePitIndex <= 13 &&
+                board[activePitIndex] == 1 &&
+                board[oppositePitIndex] > 0
             );
         }
     };
 
-    captureHandler = (playerIndex: 1 | 2, activePitIndex: number) => {
+    captureHandler = (playerIndex: 1 | 2, activePitIndex: number, oppositePitIndex: number) => {
         const {board} = this.state;
         if (playerIndex == 1) {
-            board[0] += board[activePitIndex + 1] + board[capturedIndex[activePitIndex + 1]];
+            board[0] += board[activePitIndex] + board[oppositePitIndex];
         } else {
-            board[7] += board[activePitIndex + 1] + board[capturedIndex[activePitIndex + 1]];
+            board[7] += board[activePitIndex] + board[oppositePitIndex];
         }
         this.openNotification('captured!!!');
-        board[activePitIndex + 1] = 0;
-        board[capturedIndex[activePitIndex + 1]] = 0;
+        board[activePitIndex] = 0;
+        board[oppositePitIndex] = 0;
         this.setState({board}, () => {
             this.checkGameResult();
         });
@@ -226,6 +213,11 @@ class Game extends React.Component<GameProps, GameState> {
         } else {
             return this.togglePlayer(playerIndex);
         }
+    };
+
+    getOppositePitIndex = (pitIndex: number) => {
+        // 14 ==> all pits
+        return 14 - pitIndex;
     };
 
     render() {
