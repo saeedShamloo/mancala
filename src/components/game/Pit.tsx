@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Ball from 'components/share/Ball';
 import {Popover, Button} from 'antd';
 
 type PitProps = {
