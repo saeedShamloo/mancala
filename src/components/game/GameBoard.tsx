@@ -2,7 +2,7 @@ import * as React from 'react';
 import Paper from 'components/share/Paper';
 import Score from './Score';
 import Pit from './Pit';
-import {GamePalayers} from './Game';
+import {GamePlayers} from './Game';
 import {Row, Col} from 'antd';
 import {Style} from 'components/share/types';
 import GameControll from './GameControll';
@@ -24,7 +24,7 @@ type GameBoardProps = {
     board: number[];
     onPitClick: (playerIndex: number, index: number, value: number) => void;
     activePlayer: 1 | 2;
-    players: GamePalayers;
+    players: GamePlayers;
     onReset: () => void;
     onExit: () => void;
 };

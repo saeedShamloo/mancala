@@ -17,7 +17,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run precommit-msg && npm run lint"
+      "pre-commit": "npm run precommit-msg && npm run type-check && npm run lint"
     }
   },
   "author": "",

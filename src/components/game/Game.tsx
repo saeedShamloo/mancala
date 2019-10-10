@@ -5,10 +5,10 @@ import {Typography, notification, Icon, Modal} from 'antd';
 
 const {Title} = Typography;
 
-export type GamePalayers = {firstPlayer: string; secondPlayer: string};
+export type GamePlayers = {firstPlayer: string; secondPlayer: string};
 type GameProps = {};
 type GameState = {
-    palayers: GamePalayers;
+    palayers: GamePlayers;
     gameIsStarting: boolean;
     board: number[];
     playerTurn: 1 | 2;
@@ -32,7 +32,7 @@ class Game extends React.Component<GameProps, GameState> {
         this.state = initialState;
     }
 
-    hanldeEntryFormSubmit = (palayers: GamePalayers) => {
+    hanldeEntryFormSubmit = (palayers: GamePlayers) => {
         this.setState({
             palayers: palayers,
             gameIsStarting: true
